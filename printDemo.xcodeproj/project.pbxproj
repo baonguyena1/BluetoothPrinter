@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		97F98C231F2B427100D76B28 /* print.bmp in Resources */ = {isa = PBXBuildFile; fileRef = 97F98C221F2B427100D76B28 /* print.bmp */; };
 		D17A2A131CCF3D3800B0ADA7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = D17A2A121CCF3D3800B0ADA7 /* main.m */; };
 		D17A2A161CCF3D3800B0ADA7 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = D17A2A151CCF3D3800B0ADA7 /* AppDelegate.m */; };
 		D17A2A191CCF3D3800B0ADA7 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D17A2A181CCF3D3800B0ADA7 /* ViewController.m */; };
@@ -15,6 +16,13 @@
 		D17A2A211CCF3D3800B0ADA7 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D17A2A1F1CCF3D3800B0ADA7 /* LaunchScreen.storyboard */; };
 		D17A2A2C1CCF3D3900B0ADA7 /* printDemoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D17A2A2B1CCF3D3900B0ADA7 /* printDemoTests.m */; };
 		D17A2A371CCF3D3900B0ADA7 /* printDemoUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = D17A2A361CCF3D3900B0ADA7 /* printDemoUITests.m */; };
+		D17A2A491CCF3F7200B0ADA7 /* HHBluetoothPrinterManager.m in Sources */ = {isa = PBXBuildFile; fileRef = D17A2A461CCF3F7200B0ADA7 /* HHBluetoothPrinterManager.m */; };
+		D17A2A4A1CCF3F7200B0ADA7 /* HHPrinterFormat.m in Sources */ = {isa = PBXBuildFile; fileRef = D17A2A481CCF3F7200B0ADA7 /* HHPrinterFormat.m */; };
+		D17A2A4C1CCF41F400B0ADA7 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D17A2A4B1CCF41F400B0ADA7 /* CoreGraphics.framework */; };
+		DC1E7BE11F3D695300B326E4 /* receipt.png in Resources */ = {isa = PBXBuildFile; fileRef = DC1E7BE01F3D695300B326E4 /* receipt.png */; };
+		DC1E7BE41F3D69AF00B326E4 /* UIImage+Splitting.m in Sources */ = {isa = PBXBuildFile; fileRef = DC1E7BE31F3D69AF00B326E4 /* UIImage+Splitting.m */; };
+		DC1E7BE81F3D6FFE00B326E4 /* rc3.png in Resources */ = {isa = PBXBuildFile; fileRef = DC1E7BE71F3D6FFE00B326E4 /* rc3.png */; };
+		DC1E7BEA1F3D716600B326E4 /* qa.png in Resources */ = {isa = PBXBuildFile; fileRef = DC1E7BE91F3D716600B326E4 /* qa.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -35,6 +43,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		97F98C221F2B427100D76B28 /* print.bmp */ = {isa = PBXFileReference; lastKnownFileType = image.bmp; path = print.bmp; sourceTree = "<group>"; };
 		D17A2A0E1CCF3D3800B0ADA7 /* printDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = printDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D17A2A121CCF3D3800B0ADA7 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		D17A2A141CCF3D3800B0ADA7 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -51,6 +60,16 @@
 		D17A2A321CCF3D3900B0ADA7 /* printDemoUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = printDemoUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D17A2A361CCF3D3900B0ADA7 /* printDemoUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = printDemoUITests.m; sourceTree = "<group>"; };
 		D17A2A381CCF3D3900B0ADA7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D17A2A451CCF3F7200B0ADA7 /* HHBluetoothPrinterManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HHBluetoothPrinterManager.h; sourceTree = "<group>"; };
+		D17A2A461CCF3F7200B0ADA7 /* HHBluetoothPrinterManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HHBluetoothPrinterManager.m; sourceTree = "<group>"; };
+		D17A2A471CCF3F7200B0ADA7 /* HHPrinterFormat.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HHPrinterFormat.h; sourceTree = "<group>"; };
+		D17A2A481CCF3F7200B0ADA7 /* HHPrinterFormat.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HHPrinterFormat.m; sourceTree = "<group>"; };
+		D17A2A4B1CCF41F400B0ADA7 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		DC1E7BE01F3D695300B326E4 /* receipt.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = receipt.png; sourceTree = "<group>"; };
+		DC1E7BE21F3D69AF00B326E4 /* UIImage+Splitting.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Splitting.h"; sourceTree = "<group>"; };
+		DC1E7BE31F3D69AF00B326E4 /* UIImage+Splitting.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Splitting.m"; sourceTree = "<group>"; };
+		DC1E7BE71F3D6FFE00B326E4 /* rc3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = rc3.png; sourceTree = "<group>"; };
+		DC1E7BE91F3D716600B326E4 /* qa.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = qa.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,6 +77,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D17A2A4C1CCF41F400B0ADA7 /* CoreGraphics.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -81,6 +101,7 @@
 		D17A2A051CCF3D3800B0ADA7 = {
 			isa = PBXGroup;
 			children = (
+				D17A2A4B1CCF41F400B0ADA7 /* CoreGraphics.framework */,
 				D17A2A101CCF3D3800B0ADA7 /* printDemo */,
 				D17A2A2A1CCF3D3900B0ADA7 /* printDemoTests */,
 				D17A2A351CCF3D3900B0ADA7 /* printDemoUITests */,
@@ -101,11 +122,21 @@
 		D17A2A101CCF3D3800B0ADA7 /* printDemo */ = {
 			isa = PBXGroup;
 			children = (
+				DC1E7BE91F3D716600B326E4 /* qa.png */,
+				DC1E7BE71F3D6FFE00B326E4 /* rc3.png */,
+				97F98C221F2B427100D76B28 /* print.bmp */,
+				DC1E7BE21F3D69AF00B326E4 /* UIImage+Splitting.h */,
+				DC1E7BE31F3D69AF00B326E4 /* UIImage+Splitting.m */,
+				DC1E7BE01F3D695300B326E4 /* receipt.png */,
 				D17A2A141CCF3D3800B0ADA7 /* AppDelegate.h */,
 				D17A2A151CCF3D3800B0ADA7 /* AppDelegate.m */,
 				D17A2A171CCF3D3800B0ADA7 /* ViewController.h */,
 				D17A2A181CCF3D3800B0ADA7 /* ViewController.m */,
 				D17A2A1A1CCF3D3800B0ADA7 /* Main.storyboard */,
+				D17A2A451CCF3F7200B0ADA7 /* HHBluetoothPrinterManager.h */,
+				D17A2A461CCF3F7200B0ADA7 /* HHBluetoothPrinterManager.m */,
+				D17A2A471CCF3F7200B0ADA7 /* HHPrinterFormat.h */,
+				D17A2A481CCF3F7200B0ADA7 /* HHPrinterFormat.m */,
 				D17A2A1D1CCF3D3800B0ADA7 /* Assets.xcassets */,
 				D17A2A1F1CCF3D3800B0ADA7 /* LaunchScreen.storyboard */,
 				D17A2A221CCF3D3900B0ADA7 /* Info.plist */,
@@ -207,6 +238,7 @@
 				TargetAttributes = {
 					D17A2A0D1CCF3D3800B0ADA7 = {
 						CreatedOnToolsVersion = 7.3;
+						DevelopmentTeam = E9TB9MZNT9;
 					};
 					D17A2A261CCF3D3900B0ADA7 = {
 						CreatedOnToolsVersion = 7.3;
@@ -243,9 +275,13 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DC1E7BE81F3D6FFE00B326E4 /* rc3.png in Resources */,
 				D17A2A211CCF3D3800B0ADA7 /* LaunchScreen.storyboard in Resources */,
+				DC1E7BE11F3D695300B326E4 /* receipt.png in Resources */,
+				DC1E7BEA1F3D716600B326E4 /* qa.png in Resources */,
 				D17A2A1E1CCF3D3800B0ADA7 /* Assets.xcassets in Resources */,
 				D17A2A1C1CCF3D3800B0ADA7 /* Main.storyboard in Resources */,
+				97F98C231F2B427100D76B28 /* print.bmp in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -272,7 +308,10 @@
 			files = (
 				D17A2A191CCF3D3800B0ADA7 /* ViewController.m in Sources */,
 				D17A2A161CCF3D3800B0ADA7 /* AppDelegate.m in Sources */,
+				DC1E7BE41F3D69AF00B326E4 /* UIImage+Splitting.m in Sources */,
 				D17A2A131CCF3D3800B0ADA7 /* main.m in Sources */,
+				D17A2A4A1CCF3F7200B0ADA7 /* HHPrinterFormat.m in Sources */,
+				D17A2A491CCF3F7200B0ADA7 /* HHBluetoothPrinterManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -413,9 +452,11 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = E9TB9MZNT9;
 				INFOPLIST_FILE = printDemo/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = yewan.printDemo;
+				PRODUCT_BUNDLE_IDENTIFIER = getz.getz.co;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -424,9 +465,11 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = E9TB9MZNT9;
 				INFOPLIST_FILE = printDemo/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = yewan.printDemo;
+				PRODUCT_BUNDLE_IDENTIFIER = getz.getz.co;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
@@ -496,6 +539,7 @@
 				D17A2A3D1CCF3D3900B0ADA7 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		D17A2A3E1CCF3D3900B0ADA7 /* Build configuration list for PBXNativeTarget "printDemoTests" */ = {
 			isa = XCConfigurationList;
@@ -504,6 +548,7 @@
 				D17A2A401CCF3D3900B0ADA7 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		D17A2A411CCF3D3900B0ADA7 /* Build configuration list for PBXNativeTarget "printDemoUITests" */ = {
 			isa = XCConfigurationList;
@@ -512,6 +557,7 @@
 				D17A2A431CCF3D3900B0ADA7 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
