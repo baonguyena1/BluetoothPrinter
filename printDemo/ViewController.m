@@ -9,6 +9,8 @@
 #import "ViewController.h"
 #import "HHBluetoothPrinterManager.h"
 #import "UIImage+Splitting.h"
+#import "UIImage+Compress.h"
+#import "HHPrinterFormat.h"
 
 @interface ViewController ()<HHBluetoothPrinterManagerDelegate,UITableViewDelegate,UITableViewDataSource>
 {
@@ -145,55 +147,122 @@
 }
 
 - (void)dayinStart{//打印
-    [self printerInit];
-    [self jingb];
-    [self jinga];
+    [self printBill];
     
-    [self printerWithFormat:Align_Center CharZoom:Char_Zoom_2 Content:@"班友点餐宝\n"];
-    [self printerWithFormat:Align_Left CharZoom:Char_Normal Content:@"--------------------------------\n"];
-    [self printerWithFormat:Align_Left CharZoom:Char_Normal Content:@"订单编号：OD2016217115200045\n"];
-    [self printerWithFormat:Align_Left CharZoom:Char_Normal Content:@"门店：湖东店\n"];
-    [self printerWithFormat:Align_Left CharZoom:Char_Normal Content:@"电话：0512-62552546\n"];
-    [self printerWithFormat:Align_Left CharZoom:Char_Normal Content:@"地址：湖东邻里中心Z125室\n"];
-    [self printerWithFormat:Align_Left CharZoom:Char_Normal Content:@"操作员：admin\n"];
-    [self printerWithFormat:Align_Left CharZoom:Char_Normal Content:@"订单信息：\n"];
-        [self printerWithFormat:Align_Left CharZoom:Char_Normal Content:@"订单属性：外卖\n"];
-    [self printerWithFormat:Align_Left CharZoom:Char_Normal Content:[NSString stringWithFormat: @"订单来源：%@\n",@"门店"]];
-    [self printerWithFormat:Align_Left CharZoom:Char_Normal Content:@"--------------------------------\n"];
-    [self printerWithFormat:Align_Left CharZoom:Char_Normal Content:@"商品详情：\n"];
-    [self printerWithFormat:Align_Left CharZoom:Char_Normal Content:@"名字      数量       金额\n"];
-    [self printerWithFormat:Align_Left CharZoom:Char_Normal Content:@"--------------------------------\n"];
-    [self printerWithFormat:Align_Left CharZoom:Char_Zoom_2 Content:[NSString stringWithFormat: @"实付金额：%@\n",@"100.00"]];
-    [self printerWithFormat:Align_Left CharZoom:Char_Normal Content:@"--------------------------------\n\n"];
-    NSDateFormatter *dataFormat = [[NSDateFormatter alloc] init];
-    [dataFormat setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
-    NSString* displayTime = nil;
-    NSDate *date = [NSDate date];
-    displayTime = [dataFormat stringFromDate:date];
-    [self printerWithFormat:Align_Center CharZoom:Char_Normal Content:@"感谢您的惠顾，欢迎下次光临\n"];
-    [self printerWithFormat:Align_Center CharZoom:Char_Normal Content:[NSString stringWithFormat: @"打印时间：   %@\n",displayTime]];
-    [self printerWithFormat:Align_Left CharZoom:Char_Normal Content:@"\n"];
-    [self printerWithFormat:Align_Left CharZoom:Char_Normal Content:@"\n"];
-    [self printerInit];
+//    [self printerInit];
+//    [self jingb];
+//    [self jinga];
+//
+//    [self printerWithFormat:Align_Center CharZoom:Char_Zoom_2 Content:@"班友点餐宝\n"];
+//    [self printerWithFormat:Align_Left CharZoom:Char_Normal Content:@"--------------------------------\n"];
+//    [self printerWithFormat:Align_Left CharZoom:Char_Normal Content:@"订单编号：OD2016217115200045\n"];
+//    [self printerWithFormat:Align_Left CharZoom:Char_Normal Content:@"门店：湖东店\n"];
+//    [self printerWithFormat:Align_Left CharZoom:Char_Normal Content:@"电话：0512-62552546\n"];
+//    [self printerWithFormat:Align_Left CharZoom:Char_Normal Content:@"地址：湖东邻里中心Z125室\n"];
+//    [self printerWithFormat:Align_Left CharZoom:Char_Normal Content:@"操作员：admin\n"];
+//    [self printerWithFormat:Align_Left CharZoom:Char_Normal Content:@"订单信息：\n"];
+//        [self printerWithFormat:Align_Left CharZoom:Char_Normal Content:@"订单属性：外卖\n"];
+//    [self printerWithFormat:Align_Left CharZoom:Char_Normal Content:[NSString stringWithFormat: @"订单来源：%@\n",@"门店"]];
+//    [self printerWithFormat:Align_Left CharZoom:Char_Normal Content:@"--------------------------------\n"];
+//    [self printerWithFormat:Align_Left CharZoom:Char_Normal Content:@"商品详情：\n"];
+//    [self printerWithFormat:Align_Left CharZoom:Char_Normal Content:@"名字      数量       金额\n"];
+//    [self printerWithFormat:Align_Left CharZoom:Char_Normal Content:@"--------------------------------\n"];
+//    [self printerWithFormat:Align_Left CharZoom:Char_Zoom_2 Content:[NSString stringWithFormat: @"实付金额：%@\n",@"100.00"]];
+//    [self printerWithFormat:Align_Left CharZoom:Char_Normal Content:@"--------------------------------\n\n"];
+//    NSDateFormatter *dataFormat = [[NSDateFormatter alloc] init];
+//    [dataFormat setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
+//    NSString* displayTime = nil;
+//    NSDate *date = [NSDate date];
+//    displayTime = [dataFormat stringFromDate:date];
+//    [self printerWithFormat:Align_Center CharZoom:Char_Normal Content:@"感谢您的惠顾，欢迎下次光临\n"];
+//    [self printerWithFormat:Align_Center CharZoom:Char_Normal Content:[NSString stringWithFormat: @"打印时间：   %@\n",displayTime]];
+//    [self printerWithFormat:Align_Left CharZoom:Char_Normal Content:@"\n"];
+//    [self printerWithFormat:Align_Left CharZoom:Char_Normal Content:@"\n"];
+//    [self printerInit];
+    
 }
-- (void)erweimaStart{//二维码
-//    UIImage * printimage = [self createQRForString:@"bao"];
-    UIImage *printimage = [UIImage imageNamed:@"rc3.png"];
-    UIImage *scaleImage = [self scaleWithFixedWidth:384.0 image:printimage];
+
+- (void)printBill {
+//    [self printImageWithName:@"logo"];
+    [self printerInit];
+    HHPrinterFormat *format = [[HHPrinterFormat alloc] init];
+//    NSString *title = [format printTitle:@"Receipt printer GetZ branch"];
+//    [self printerWithFormat:Align_Center CharZoom:Char_Zoom_4 Content:title];
+    NSDictionary *menuDic = @{
+                               @"Total Discount": @"-SGD 1.87",
+                               @"Subtotal": @"SGD 26.67",
+                               @"Misc Fee": @"SGD 18.44",
+                               @"GST": @"SGD 3.03",
+                               @"Round Amt": @"-SGD 0.02"
+                               };
+    [self printerWithFormat:Align_Left
+                   CharZoom:Char_Normal
+                    Content:[format printPriceMsg:menuDic isHead:NO]];
+    NSString *menu = [format printMenu:@"3" title:@"hamburger (and chéeburgers and bacon chéebủgers)" price:@"SGD 14.67" isHead:YES];
+    [self printerWithFormat:Align_Left CharZoom:Char_Normal Content:menu];
+//    NSDictionary *mainMenu = @{
+//                               @"1": menuDic
+//                               };
+//    NSString *menu = [format printMenuMsg:mainMenu isHead:YES];
+//    [self printerWithFormat:Align_Left CharZoom:Char_Normal Content:menu];
+//
+//    NSDictionary *addressDic = @{
+//                                 @"Payment Mode": @"",
+//                                 @"GetPay - Visa/Master (Online)": @"SGD 46.25",
+//                                 @"GetzPay transaction ID": @"CCDD09033333",
+//                                 @"Merchant Reference ID": @"TR8493898989899",
+//                                 @"Order Time": @"09/09/2017 00:00AM"
+//                                 };
+//    NSString *address = [format printAddressMsg:addressDic isHead:YES];
+//    [self printerWithFormat:Align_Left CharZoom:Char_Normal Content:address];
+//
+//    [self printerWithFormat:Align_Left CharZoom:Char_Normal Content:menu];
+//    [self printerWithFormat:Align_Left CharZoom:Char_Normal Content:menu];
+//    [self printerWithFormat:Align_Left CharZoom:Char_Normal Content:menu];
+//    [self printerWithFormat:Align_Left CharZoom:Char_Normal Content:menu];
+//
+//    [self printerInit];
+//    [self printImageWithName:@"qa-code"];
     
-    NSUInteger rows = (int)scaleImage.size.height % 30 ? scaleImage.size.height / 30 + 1 : scaleImage.size.height / 30;
+    [self printerInit];
+    [self printerWithFormat:Align_Left CharZoom:Char_Normal Content:@"\n"];
+    [self printerWithFormat:Align_Left CharZoom:Char_Normal Content:@"\n"];
+    [self printerWithFormat:Align_Left CharZoom:Char_Normal Content:@"\n"];
+    [self printerWithFormat:Align_Left CharZoom:Char_Normal Content:@"\n"];
+}
+
+- (void)printImageWithName:(NSString *)imageName {
+    UIImage *printimage = [UIImage imageNamed:imageName];
+    if (printimage == nil) {
+        return;
+    }
+//    UIImage *compressImage = [printimage jpeg:Lowest];
+    UIImage *scaleImage = [self scaleWithFixedWidth:384 image:printimage];
+    NSUInteger rows = (int)scaleImage.size.height % MAX_HEIGHT_SUB_IMAGE ? scaleImage.size.height / MAX_HEIGHT_SUB_IMAGE + 1 : scaleImage.size.height / MAX_HEIGHT_SUB_IMAGE;
     NSArray *subImages = [scaleImage splitImagesIntoSubImagesWithNumberOfRows:rows numberOfColumns:1];
     for (UIImage *image in subImages) {
         NSLog(@"--> %@", image);
         [self printImage:image];
     }
+}
+
+- (void)erweimaStart{//二维码
+    UIImage *printimage = [UIImage imageNamed:@"re"];
+    UIImage *scaleImage = [self scaleWithFixedWidth:384 image:printimage];
+    
+    NSUInteger rows = (int)scaleImage.size.height % MAX_HEIGHT_SUB_IMAGE ? scaleImage.size.height / MAX_HEIGHT_SUB_IMAGE + 1 : scaleImage.size.height / MAX_HEIGHT_SUB_IMAGE;
+    NSArray *subImages = [scaleImage splitImagesIntoSubImagesWithNumberOfRows:rows numberOfColumns:1];
+    for (UIImage *image in subImages) {
+        NSLog(@"--> %@", image);
+        [self printImage:image];
+    }
+    
     Byte controlData[8];
     memset(controlData, '\n', 8);
     NSData *printData = [[NSData alloc] initWithBytes:controlData length:3];
     [self printData:printData];
     
 }
-
 
 - (UIImage *) png2GrayscaleImage:(UIImage *) oriImage {
     //const int ALPHA = 0;
@@ -233,7 +302,6 @@
     
     // paint the bitmap to our context which will fill in the pixels array
     CGContextDrawImage(context, CGRectMake(0, 0, width , height), [oriImage CGImage]);
-    NSLog(@"----> %d %d", width, nWidthByteSize);
 //    NSLog(@"---> 1.%ld 2.%ld 3.%ld 4.%d 5.%d 6.%d<-----", (long)nWidthByteSize, nWidthByteSize & 0xff, (nWidthByteSize >> 8 ) & 0xff, y_to, y_to & 0xff, (y_to >> 8) & 0xff );
     
     Byte controlData[8];
@@ -343,10 +411,14 @@
             uint32_t gray = 0.3 * rgbaPixel[RED] + 0.59 * rgbaPixel[GREEN] + 0.11 * rgbaPixel[BLUE];
             
             rgbaPixel[RED] = rgbaPixel[GREEN] = rgbaPixel[BLUE] = gray;
-            if (gray < 55) {
+            if (gray < 127) {
                 binaryImgData[(y*width+x)/8] |= (0x80>>(x%8));
             }
         }
+    }
+    
+    for (NSUInteger i = 0; i < nBinaryImgDataSize; i++) {
+        NSLog(@"----> %lu ----> %02x", (unsigned long)i, binaryImgData[i]);
     }
     
     /**
@@ -358,15 +430,17 @@
 }
 
 - (void)printData:(NSData *)dataPrinted {
-    NSData *data = nil;
     NSUInteger strLength;
     NSUInteger cellCount;
     NSUInteger cellMin;
     NSUInteger cellLen;
-    
+
     strLength = [dataPrinted length];
+    if (strLength < 1) {
+        return;
+    }
     cellCount = (strLength % MAX_CHARACTERISTIC_VALUE_SIZE) ? (strLength / MAX_CHARACTERISTIC_VALUE_SIZE + 1) : (strLength / MAX_CHARACTERISTIC_VALUE_SIZE);
-    for (NSUInteger i=0; i<cellCount; i++) {
+    for (NSUInteger i = 0; i < cellCount; i++) {
         cellMin = i*MAX_CHARACTERISTIC_VALUE_SIZE;
         if (cellMin + MAX_CHARACTERISTIC_VALUE_SIZE > strLength) {
             cellLen = strLength-cellMin;
@@ -374,9 +448,9 @@
             cellLen = MAX_CHARACTERISTIC_VALUE_SIZE;
         }
         NSRange rang = NSMakeRange(cellMin, cellLen);
-        
-        data = [dataPrinted subdataWithRange:rang];
-        [sendDataArray addObject:data];
+
+        NSData *subData = [dataPrinted subdataWithRange:rang];
+        [sendDataArray addObject:subData];
     }
 }
 
@@ -484,7 +558,8 @@
     
     data = [NSData dataWithBytes:caPrintFmt length:6+strLength];
     
-    [self printLongData:data];
+//    [self printLongData:data];
+    [self printData:data];
 }
 
 
@@ -510,7 +585,6 @@
             cellLen = MAX_CHARACTERISTIC_VALUE_SIZE;
         }
         
-        NSLog(@"print:%d,%d,%d,%d", strLength,cellCount, cellMin, cellLen);
         NSRange rang = NSMakeRange(cellMin, cellLen);
         NSData *subData = [printContent subdataWithRange:rang];
         

@@ -48,6 +48,8 @@ typedef NS_ENUM(NSInteger,HHBluePrinterState)
  */
 - (NSString *)printMenuMsg:(NSDictionary<NSString*,NSDictionary*> *)menuMsgDic isHead:(BOOL)isHead;
 
+- (NSString *)printMenu:(NSString *)index title:(NSString *)title price:(NSString *)price isHead:(BOOL)isHead;
+
 /**
  *  打印order信息
  *

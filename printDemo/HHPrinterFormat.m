@@ -75,8 +75,42 @@ static const NSInteger LineByteSize = 32;
     return [self.contentString copy];
 }
 
-- (NSString *)printPriceMsg:(NSDictionary<NSString *,NSString *> *)msgDic isHead:(BOOL)isHead
-{
+- (NSString *)printMenu:(NSString *)index title:(NSString *)title price:(NSString *)price isHead:(BOOL)isHead {
+    self.contentString = [NSMutableString new];
+    NSUInteger priceSpace = 10;
+    if (isHead) {
+        [self.contentString appendString:@"\n"];
+        for (NSInteger idx = 0; idx < 32; ++idx) {
+            [self.contentString appendString:@"-"];
+        }
+        [self.contentString appendString:@"\n"];
+    }
+    [self.contentString appendFormat:@"%@ ", index];
+    if (title.length > LineByteSize - (index.length + priceSpace + 3)) {
+        NSUInteger subTitleIndex = LineByteSize - (index.length + priceSpace + 3);
+        [self.contentString appendFormat:@"%@ %@\n", [title substringToIndex:subTitleIndex], price];
+        price = [price substringFromIndex:subTitleIndex];
+    }
+    
+    while (title.length > LineByteSize - (index.length + priceSpace + 3)) {
+        NSMutableString *newLine = [NSMutableString new];
+        for (NSUInteger idx = 0; idx < index.length + 1; idx++) {
+            [newLine appendString:@" "];
+        }
+        NSUInteger subTitleIndex = LineByteSize - (index.length + priceSpace + 3);
+        NSString *subTitle = [title substringToIndex:subTitleIndex];
+        [newLine appendString:subTitle];
+        for (NSUInteger idx = newLine.length; idx < LineByteSize; idx++) {
+            [newLine appendString:@" "];
+        }
+        [newLine appendString:@"\n"];
+        [self.contentString appendString:newLine];
+    }
+    
+    return [self.contentString copy];
+}
+
+- (NSString *)printPriceMsg:(NSDictionary<NSString *,NSString *> *)msgDic isHead:(BOOL)isHead {
     self.contentString = [NSMutableString new];
     if (isHead) {
         for (NSInteger idx = 0; idx < 32; ++idx) {
@@ -87,7 +121,7 @@ static const NSInteger LineByteSize = 32;
     
     [msgDic enumerateKeysAndObjectsUsingBlock:^(NSString*  _Nonnull key, NSString*  _Nonnull obj, BOOL * _Nonnull stop) {
         [self.contentString appendString:key];
-        for (NSInteger idx = key.length; idx < LineByteSize - key.length - obj.length-1; ++idx) {
+        for (NSInteger idx = 0; idx < LineByteSize - key.length - obj.length - 2; ++idx) {
             [self.contentString appendString:@" "];
         }
         [self.contentString appendString:obj];
@@ -113,7 +147,7 @@ static const NSInteger LineByteSize = 32;
         
         if (keyValue.length + obj.length > LineByteSize) {
             while (keyValue.length + obj.length > LineByteSize) {
-                NSInteger length = LineByteSize - obj.length; //可显示的字符
+                NSInteger length = LineByteSize - keyValue.length; //可显示的字符
                 NSString* newValue = [obj substringToIndex:length];
                 [self.contentString appendString:newValue];
                 [self.contentString appendString:@"\n"];
