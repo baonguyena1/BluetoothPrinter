@@ -27,7 +27,8 @@ typedef  enum {
 }TYPE_TICKET;
 
 #define MAX_CHARACTERISTIC_VALUE_SIZE   32
-#define MAX_HEIGHT_SUB_IMAGE            5
+#define MAX_HEIGHT_SUB_IMAGE            30
+#define WIDTH_58                        384
 
 @interface ViewController : UIViewController
 
