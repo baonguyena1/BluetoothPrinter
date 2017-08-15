@@ -359,11 +359,12 @@
     [self startPrint:sendData];
 }
 
-- (void)startPrint:(NSData *)writeData
-{
+- (void)startPrint:(NSData *)writeData {
     if (self.connectedPeripheral && self.connectedCharacteristic) {
-        [self startPrint:self.connectedPeripheral writeValue:writeData forCharacteristic:self.connectedCharacteristic type:CBCharacteristicWriteWithResponse];
-        return;
+        [self startPrint:self.connectedPeripheral
+              writeValue:writeData
+       forCharacteristic:self.connectedCharacteristic
+                    type:CBCharacteristicWriteWithResponse];
     }
 }
 
