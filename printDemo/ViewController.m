@@ -155,9 +155,9 @@ static UInt32 p6[2] = {0, 2};
 }
 
 - (void)dayinStart{//打印
-    UIImage *printImage = [UIImage imageNamed:@"logo"];
+    UIImage *printImage = [UIImage imageNamed:@"re"];
     [self POS_PrintBMP:printImage width:WIDTH_58 mode:0];
-//    [self printImageWithName:@"logo"];
+    
 //    [self printBill];
     
 //    [self printerInit];
@@ -421,16 +421,7 @@ static UInt32 p6[2] = {0, 2};
 
             // convert to grayscale using recommended method: http://en.wikipedia.org/wiki/Grayscale#Converting_color_to_grayscale
             uint32_t gray = 0.3 * rgbaPixel[RED] + 0.59 * rgbaPixel[GREEN] + 0.11 * rgbaPixel[BLUE];
-
-            if (gray > 127) {
-                rgbaPixel[RED] = 255;
-                rgbaPixel[GREEN] = 255;
-                rgbaPixel[BLUE] = 255;
-
-            } else {
-                rgbaPixel[RED] = 0;
-                rgbaPixel[GREEN] = 0;
-                rgbaPixel[BLUE] = 0;
+            if (gray < 127) {
                 binaryImgData[(y*width+x)/8] |= (0x80>>(x%8));
             }
         }
@@ -459,7 +450,8 @@ static UInt32 p6[2] = {0, 2};
          PRINT IMAGE
          */
         NSData *data = [[NSData alloc] initWithBytes:SET_BIT_IMAGE_MODE length:8 + nWidthByteSize];
-        [self printData:data];
+        [sendDataArray addObject:data];
+//        [self printData:data];
         free(SET_BIT_IMAGE_MODE);
         SET_BIT_IMAGE_MODE = NULL;
         offset += nWidthByteSize;
@@ -653,12 +645,10 @@ static UInt32 p6[2] = {0, 2};
 
 - (void)POS_PrintBMP:(UIImage *)src width:(NSUInteger)nWidth mode:(NSUInteger)nMode {
     NSUInteger width = ((nWidth + 7) / 8) * 8;
-//    NSUInteger height = ((((src.size.height * width) / src.size.width) + 7) / 8) * 8;
     UIImage *resizeImage = src;
     if (src.size.width != width) {
         resizeImage = [self scaleWithFixedWidth:width image:src];
     }
-    
     [[ImageProcessor shared] processImage:resizeImage];
 }
 
@@ -828,14 +818,90 @@ static UInt32 p6[2] = {0, 2};
 
 #pragma mark ImageProcessorDelegate
 - (void)imageProcessorFinishedProcessingWithImage:(UIImage*)outputImage {
-    NSLog(@"%s %@", __FUNCTION__, outputImage);
-//    [[ImageProcessor shared] pixelsOfImage:outputImage];
-    [self toGrayAndPrint:outputImage];
+    NSLog(@"%s", __FUNCTION__);
+    [self processImageData:outputImage];
 }
 
-- (void)imageProcessorFinishedProcessingWithPixel:(UInt32 *)pixels {
+- (void)processImageData:(UIImage *)inputImage {
     NSLog(@"%s", __FUNCTION__);
-    [self eachLinePixToCmd:pixels srcLen:384 * 94 width:WIDTH_58 mode:0];
+    // 1. Get the raw pixels of the image
+    
+    CGImageRef inputCGImage = [inputImage CGImage];
+    NSUInteger inputWidth = inputImage.size.width;
+    NSUInteger inputHeight = inputImage.size.height;
+    
+    CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
+    
+    NSUInteger bytesPerPixel = 4;
+    NSUInteger bitsPerComponent = 8;
+    
+    NSUInteger inputBytesPerRow = bytesPerPixel * inputWidth;
+    
+    UInt32 *inputPixels = (UInt32 *)calloc(inputHeight * inputWidth, sizeof(UInt32));
+    memset(inputPixels, 0, inputWidth * inputHeight);
+    
+    NSInteger nWidthByteSize = (inputWidth + 7)/8;
+    
+    NSInteger nBinaryImgDataSize = nWidthByteSize * inputHeight;
+    Byte *binaryImgData = (Byte *)malloc(sizeof(Byte) * nBinaryImgDataSize);
+    
+    memset(binaryImgData, 0, nBinaryImgDataSize);
+    
+    CGContextRef context = CGBitmapContextCreate(inputPixels, inputWidth, inputHeight,
+                                                 bitsPerComponent, inputBytesPerRow, colorSpace,
+                                                 kCGImageAlphaPremultipliedLast | kCGBitmapByteOrder32Big);
+    
+    CGContextDrawImage(context, CGRectMake(0, 0, inputWidth, inputHeight), inputCGImage);
+    
+    // Create a new UIImage
+    // Convert the image to black and white
+    for (NSUInteger j = 0; j < inputHeight; j++) {
+        for (NSUInteger i = 0; i < inputWidth; i++) {
+            UInt32 * currentPixel = inputPixels + (j * inputWidth) + i;
+            UInt32 color = *currentPixel;
+            
+            // Average of RGB = greyscale
+            UInt32 averageColor = (R(color) + G(color) + B(color)) / 3.0;
+            if (averageColor < 200) {
+                binaryImgData[(j*inputWidth+i)/8] |= (0x80>>(i%8));
+            }
+        }
+    }
+    
+    int offset = 0;
+    for (int y = 0; y < inputHeight; y++) {
+        
+        Byte *SET_BIT_IMAGE_MODE = (Byte *)malloc(8 + nWidthByteSize);
+        memset(SET_BIT_IMAGE_MODE, 0, 8 + nWidthByteSize);
+        SET_BIT_IMAGE_MODE[0] = 0x1d;
+        SET_BIT_IMAGE_MODE[1] = 0x76;//'v';
+        SET_BIT_IMAGE_MODE[2] = 0x30;
+        SET_BIT_IMAGE_MODE[3] = (Byte)0;
+        SET_BIT_IMAGE_MODE[4] = (Byte)(nWidthByteSize & 0xff);
+        SET_BIT_IMAGE_MODE[5] = (Byte)((nWidthByteSize>>8) & 0xff);
+        SET_BIT_IMAGE_MODE[6] = (Byte)(1 & 0xff);
+        SET_BIT_IMAGE_MODE[7] = (Byte)((1>>8) & 0xff);
+        
+        for (int i = 0; i < nWidthByteSize; i++) {
+            SET_BIT_IMAGE_MODE[8 + i] = *(binaryImgData + i + offset);
+        }
+        /**
+         PRINT IMAGE
+         */
+        NSData *data = [[NSData alloc] initWithBytes:SET_BIT_IMAGE_MODE length:8 + nWidthByteSize];
+        [sendDataArray addObject:data];
+        
+        free(SET_BIT_IMAGE_MODE);
+        SET_BIT_IMAGE_MODE = NULL;
+        offset += nWidthByteSize;
+    }
+    
+    
+    free(inputPixels);
+    free(binaryImgData);
+    inputPixels = NULL;
+    binaryImgData = NULL;
+    
 }
 
 @end

@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "Enums.h"
 
 @protocol ImageProcessorDelegate <NSObject>
 
