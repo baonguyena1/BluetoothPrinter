@@ -12,18 +12,23 @@
 
 - (NSMutableArray *)splitImageswithRow:(NSInteger)rows withColumn:(NSInteger)columns {
     NSMutableArray *subImages = [NSMutableArray array];
-    CGSize imageSize = self.size;
     CGFloat xPos = 0.0, yPos = 0.0;
-    CGFloat width = imageSize.width/rows;
-    CGFloat height = imageSize.height/columns;
-    for (int y = 0; y < columns; y++) {
+//    CGFloat width = imageSize.width/rows;
+//    CGFloat height = imageSize.height/columns;
+    
+    float scale = [[UIScreen mainScreen] scale];
+    float height = self.size.height * scale / (float)rows;
+    float width  = self.size.width * scale / (float) columns;
+    
+    for (int y = 0; y < rows; y++) {
         xPos = 0.0;
-        for (int x = 0; x < rows; x++) {
+        for (int x = 0; x < columns; x++) {
             
             CGRect rect = CGRectMake(xPos, yPos, width, height);
             CGImageRef cImage = CGImageCreateWithImageInRect([self CGImage],  rect);
             
             UIImage *subImage = [[UIImage alloc] initWithCGImage:cImage];
+            CFRelease(cImage);
             [subImages addObject:subImage];
             xPos += width;
         }

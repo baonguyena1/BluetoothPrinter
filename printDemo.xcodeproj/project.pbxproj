@@ -22,6 +22,7 @@
 		D17A2A4C1CCF41F400B0ADA7 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D17A2A4B1CCF41F400B0ADA7 /* CoreGraphics.framework */; };
 		D2BA834328AFB13D7F53797E /* libPods-printDemoUITests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B22EC765C8F2FE3CFE6A8A5C /* libPods-printDemoUITests.a */; };
 		DC1E7BE41F3D69AF00B326E4 /* UIImage+Splitting.m in Sources */ = {isa = PBXBuildFile; fileRef = DC1E7BE31F3D69AF00B326E4 /* UIImage+Splitting.m */; };
+		DC7459231F442EED00E9DB42 /* ImageProcessor.m in Sources */ = {isa = PBXBuildFile; fileRef = DC7459221F442EED00E9DB42 /* ImageProcessor.m */; };
 		DC98643E1F414E53002C25C7 /* UIImage+Compress.m in Sources */ = {isa = PBXBuildFile; fileRef = DC98643D1F414E53002C25C7 /* UIImage+Compress.m */; };
 /* End PBXBuildFile section */
 
@@ -74,6 +75,8 @@
 		D17A2A4B1CCF41F400B0ADA7 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		DC1E7BE21F3D69AF00B326E4 /* UIImage+Splitting.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Splitting.h"; sourceTree = "<group>"; };
 		DC1E7BE31F3D69AF00B326E4 /* UIImage+Splitting.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Splitting.m"; sourceTree = "<group>"; };
+		DC7459211F442EED00E9DB42 /* ImageProcessor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ImageProcessor.h; sourceTree = "<group>"; };
+		DC7459221F442EED00E9DB42 /* ImageProcessor.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ImageProcessor.m; sourceTree = "<group>"; };
 		DC98643C1F414E53002C25C7 /* UIImage+Compress.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIImage+Compress.h"; sourceTree = "<group>"; };
 		DC98643D1F414E53002C25C7 /* UIImage+Compress.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Compress.m"; sourceTree = "<group>"; };
 		DC98643F1F4150F0002C25C7 /* Enums.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Enums.h; sourceTree = "<group>"; };
@@ -158,6 +161,8 @@
 		D17A2A101CCF3D3800B0ADA7 /* printDemo */ = {
 			isa = PBXGroup;
 			children = (
+				DC7459211F442EED00E9DB42 /* ImageProcessor.h */,
+				DC7459221F442EED00E9DB42 /* ImageProcessor.m */,
 				DC1E7BE21F3D69AF00B326E4 /* UIImage+Splitting.h */,
 				DC1E7BE31F3D69AF00B326E4 /* UIImage+Splitting.m */,
 				D17A2A141CCF3D3800B0ADA7 /* AppDelegate.h */,
@@ -490,6 +495,7 @@
 				D17A2A131CCF3D3800B0ADA7 /* main.m in Sources */,
 				DC98643E1F414E53002C25C7 /* UIImage+Compress.m in Sources */,
 				D17A2A4A1CCF3F7200B0ADA7 /* HHPrinterFormat.m in Sources */,
+				DC7459231F442EED00E9DB42 /* ImageProcessor.m in Sources */,
 				D17A2A491CCF3F7200B0ADA7 /* HHBluetoothPrinterManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

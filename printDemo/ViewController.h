@@ -26,7 +26,7 @@ typedef  enum {
     TICKET_CARD,
 }TYPE_TICKET;
 
-#define MAX_CHARACTERISTIC_VALUE_SIZE   1
+#define MAX_CHARACTERISTIC_VALUE_SIZE   32
 #define MAX_HEIGHT_SUB_IMAGE            30
 #define WIDTH_58                        384
 

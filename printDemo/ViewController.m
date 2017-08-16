@@ -11,16 +11,17 @@
 #import "UIImage+Splitting.h"
 #import "UIImage+Compress.h"
 #import "HHPrinterFormat.h"
+#import "ImageProcessor.h"
 
-static int p0[2] = {0, 128};
-static int p1[2] = {0, 64};
-static int p2[2] = {0, 32};
-static int p3[2] = {0, 16};
-static int p4[2] = {0, 8};
-static int p5[2] = {0, 4};
-static int p6[2] = {0, 2};
+static UInt32 p0[2] = {0, 128};
+static UInt32 p1[2] = {0, 64};
+static UInt32 p2[2] = {0, 32};
+static UInt32 p3[2] = {0, 16};
+static UInt32 p4[2] = {0, 8};
+static UInt32 p5[2] = {0, 4};
+static UInt32 p6[2] = {0, 2};
 
-@interface ViewController ()<HHBluetoothPrinterManagerDelegate,UITableViewDelegate,UITableViewDataSource>
+@interface ViewController ()<HHBluetoothPrinterManagerDelegate,UITableViewDelegate,UITableViewDataSource, ImageProcessorDelegate>
 {
     HHBluetoothPrinterManager *manager;
     //选中的设备
@@ -71,6 +72,7 @@ static int p6[2] = {0, 2};
     table.delegate = self;
     table.dataSource = self;
     [self.view addSubview:table];
+    [ImageProcessor shared].delegate = self;
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     return dataArray1.count;
@@ -121,7 +123,6 @@ static int p6[2] = {0, 2};
 //    NSLog(@"send data timer");
     
     if ([sendDataArray count] > 0) {
-        NSLog(@"send data timer %d", sendDataArray.count);
         NSData* cmdData;
         cmdData = [sendDataArray objectAtIndex:0];
         [manager startPrint:cmdData];
@@ -154,7 +155,7 @@ static int p6[2] = {0, 2};
 }
 
 - (void)dayinStart{//打印
-    [self printImageWithName:@"qa-code"];
+    [self printImageWithName:@"logo"];
 //    [self printBill];
     
 //    [self printerInit];
@@ -191,46 +192,47 @@ static int p6[2] = {0, 2};
 }
 
 - (void)printBill {
-//    [self printImageWithName:@"logo"];
+    [self printImageWithName:@"logo"];
 //    [self printerInit];
-//    HHPrinterFormat *format = [[HHPrinterFormat alloc] init];
-//    NSString *title = [format printTitle:@"Receipt printer GetZ branch"];
-//    [self printerWithFormat:Align_Center CharZoom:Char_Zoom_4 Content:title];
-//    NSDictionary *menuDic = @{
-//                               @"Total Discount": @"-SGD 1.87",
-//                               @"Subtotal": @"SGD 26.67",
-//                               @"Misc Fee": @"SGD 18.44",
-//                               @"GST": @"SGD 3.03",
-//                               @"Round Amt": @"-SGD 0.02"
-//                               };
-//    [self printerWithFormat:Align_Left
-//                   CharZoom:Char_Normal
-//                    Content:[format printPriceMsg:menuDic isHead:NO]];
+    HHPrinterFormat *format = [[HHPrinterFormat alloc] init];
+    NSString *title = [format printTitle:@"Receipt printer GetZ branch"];
+    [self printerWithFormat:Align_Center CharZoom:Char_Zoom_4 Content:title];
+    NSDictionary *menuDic = @{
+                               @"Total Discount": @"-SGD 1.87",
+                               @"Subtotal": @"SGD 26.67",
+                               @"Misc Fee": @"SGD 18.44",
+                               @"GST": @"SGD 3.03",
+                               @"Round Amt": @"-SGD 0.02"
+                               };
+    [self printerWithFormat:Align_Left
+                   CharZoom:Char_Normal
+                    Content:[format printPriceMsg:menuDic isHead:NO]];
 //    NSString *menu = [format printMenu:@"3" title:@"hamburger (and chéeburgers and bacon chéebủgers)" price:@"SGD 14.67" isHead:YES];
 //    [self printerWithFormat:Align_Left CharZoom:Char_Normal Content:menu];
-//    NSDictionary *mainMenu = @{
-//                               @"1": menuDic
-//                               };
-//    NSString *menu = [format printMenuMsg:mainMenu isHead:YES];
-//    [self printerWithFormat:Align_Left CharZoom:Char_Normal Content:menu];
-//
-//    NSDictionary *addressDic = @{
-//                                 @"Payment Mode": @"",
-//                                 @"GetPay - Visa/Master (Online)": @"SGD 46.25",
-//                                 @"GetzPay transaction ID": @"CCDD09033333",
-//                                 @"Merchant Reference ID": @"TR8493898989899",
-//                                 @"Order Time": @"09/09/2017 00:00AM"
-//                                 };
-//    NSString *address = [format printAddressMsg:addressDic isHead:YES];
-//    [self printerWithFormat:Align_Left CharZoom:Char_Normal Content:address];
-//
-//    [self printerWithFormat:Align_Left CharZoom:Char_Normal Content:menu];
-//    [self printerWithFormat:Align_Left CharZoom:Char_Normal Content:menu];
-//    [self printerWithFormat:Align_Left CharZoom:Char_Normal Content:menu];
-//    [self printerWithFormat:Align_Left CharZoom:Char_Normal Content:menu];
-//
-//    [self printerInit];
-    [self printImageWithName:@"re"];
+    NSDictionary *mainMenu = @{
+                               @"1": menuDic
+                               };
+    NSString *menu = [format printMenuMsg:mainMenu isHead:YES];
+    [self printerWithFormat:Align_Left CharZoom:Char_Normal Content:menu];
+
+    NSDictionary *addressDic = @{
+                                 @"Payment Mode": @"",
+                                 @"GetPay - Visa/Master (Online)": @"SGD 46.25",
+                                 @"GetzPay transaction ID": @"CCDD09033333",
+                                 @"Merchant Reference ID": @"TR8493898989899",
+                                 @"Order Time": @"09/09/2017 00:00AM"
+                                 };
+    NSString *address = [format printAddressMsg:addressDic isHead:YES];
+    [self printerWithFormat:Align_Left CharZoom:Char_Normal Content:address];
+
+    [self printerWithFormat:Align_Left CharZoom:Char_Normal Content:menu];
+
+    [self printerInit];
+    
+    [self printImageWithName:@"qa-code"];
+    [self printerWithFormat:Align_Left CharZoom:Char_Normal Content:@"\n"];
+    [self printerWithFormat:Align_Left CharZoom:Char_Normal Content:@"\n"];
+    [self printerWithFormat:Align_Left CharZoom:Char_Normal Content:@"\n"];
 //
 //    NSUInteger len = 3;
 //    Byte enter[len];
@@ -251,16 +253,18 @@ static int p6[2] = {0, 2};
                                         rate:10.0];
     UIImage *gray = [self toGrayScale:resizeImage];
     UIImage *scaleImage = [self scaleWithFixedWidth:WIDTH_58 image:gray];
-    NSUInteger rows = (int)scaleImage.size.height % MAX_HEIGHT_SUB_IMAGE ? scaleImage.size.height / MAX_HEIGHT_SUB_IMAGE + 1 : scaleImage.size.height / MAX_HEIGHT_SUB_IMAGE;
-    NSArray *subImages = [scaleImage splitImagesIntoSubImagesWithNumberOfRows:rows numberOfColumns:1];
-    for (UIImage *image in subImages) {
-        NSLog(@"--> %@", image);
-        [self toGrayAndPrint:image];
-    }
-    Byte controlData[3];
-    memset(controlData, '\n', 3);
-    NSData *printData = [[NSData alloc] initWithBytes:controlData length:3];
-    [self printData:printData];
+//    NSUInteger rows = (int)scaleImage.size.height % MAX_HEIGHT_SUB_IMAGE ? scaleImage.size.height / MAX_HEIGHT_SUB_IMAGE + 1 : scaleImage.size.height / MAX_HEIGHT_SUB_IMAGE;
+////    NSUInteger rows = (int)scaleImage.size.height + 1;
+//    NSArray *subImages = [scaleImage splitImagesIntoSubImagesWithNumberOfRows:rows numberOfColumns:1];
+//    for (UIImage *image in subImages) {
+//        NSLog(@"--> %@", image);
+//        [self toGrayAndPrint:image];
+//    }
+    [self toGrayAndPrint:scaleImage];
+//    Byte controlData[3];
+//    memset(controlData, '\n', 3);
+//    NSData *printData = [[NSData alloc] initWithBytes:controlData length:3];
+//    [self printData:printData];
 }
 
 - (void)erweimaStart{//二维码
@@ -288,7 +292,7 @@ static int p6[2] = {0, 2};
     const int BLUE = 3;
     
     int width = oriImage.size.width ;//imageRect.size.width;
-    int height =oriImage.size.height;
+    int height = oriImage.size.height;
     int imgSize = width * height;
     int x_origin = 0;
     int y_to = height;
@@ -368,7 +372,7 @@ static int p6[2] = {0, 2};
     return 0;
 }
 
-- (UIImage *)toGrayAndPrint:(UIImage *)oriImage {
+- (void)toGrayAndPrint:(UIImage *)oriImage {
     const int RED = 1;
     const int GREEN = 2;
     const int BLUE = 3;
@@ -398,26 +402,16 @@ static int p6[2] = {0, 2};
     CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
     
     // create a context with RGBA pixels
-    CGContextRef context = CGBitmapContextCreate(pixels, width, height, 8, width * sizeof(uint32_t), colorSpace,kCGBitmapByteOrder32Little | kCGImageAlphaPremultipliedLast);
+    CGContextRef context = CGBitmapContextCreate(pixels,
+                                                 width,
+                                                 height,
+                                                 8,
+                                                 width * sizeof(uint32_t),
+                                                 colorSpace,
+                                                 kCGBitmapByteOrder32Little | kCGImageAlphaPremultipliedLast);
     
     // paint the bitmap to our context which will fill in the pixels array
     CGContextDrawImage(context, CGRectMake(0, 0, width , height), [oriImage CGImage]);
-    
-    /**
-     SEND SIGNAL PRINT IMAGE TO PRINTER
-     */
-    Byte *SET_BIT_IMAGE_MODE = (Byte *)malloc(8 + nBinaryImgDataSize);
-    SET_BIT_IMAGE_MODE[0] = 0x1d;
-    SET_BIT_IMAGE_MODE[1] = 0x76;//'v';
-    SET_BIT_IMAGE_MODE[2] = 0x30;
-    SET_BIT_IMAGE_MODE[3] = (Byte)0;
-    SET_BIT_IMAGE_MODE[4] = (Byte)(nWidthByteSize & 0xff);
-    SET_BIT_IMAGE_MODE[5] = (Byte)((nWidthByteSize>>8) & 0xff);
-    SET_BIT_IMAGE_MODE[6] = (Byte)(y_to & 0xff);
-    SET_BIT_IMAGE_MODE[7] = (Byte)((y_to>>8) & 0xff);
-    
-    NSData *printData = [[NSData alloc] initWithBytes:SET_BIT_IMAGE_MODE length:8];
-    [self printData:printData];
     
     for(int y = 0; y < y_to; y++) {
         for(int x = x_origin; x < width ; x++) {
@@ -439,49 +433,69 @@ static int p6[2] = {0, 2};
             }
         }
     }
-    for (int  i = 0; i<nBinaryImgDataSize; i++) {
-        SET_BIT_IMAGE_MODE[8+i] = *(binaryImgData+i);
+    int offset = 0;
+    for (int y = 0; y < y_to; y++) {
+        
+        /**
+         SEND SIGNAL PRINT IMAGE TO PRINTER
+         */
+        Byte *SET_BIT_IMAGE_MODE = (Byte *)malloc(8 + nWidthByteSize);
+        memset(SET_BIT_IMAGE_MODE, 0, 8 + nWidthByteSize);
+        SET_BIT_IMAGE_MODE[0] = 0x1d;
+        SET_BIT_IMAGE_MODE[1] = 0x76;//'v';
+        SET_BIT_IMAGE_MODE[2] = 0x30;
+        SET_BIT_IMAGE_MODE[3] = (Byte)0;
+        SET_BIT_IMAGE_MODE[4] = (Byte)(nWidthByteSize & 0xff);
+        SET_BIT_IMAGE_MODE[5] = (Byte)((nWidthByteSize>>8) & 0xff);
+        SET_BIT_IMAGE_MODE[6] = (Byte)(y_to & 0xff);
+        SET_BIT_IMAGE_MODE[7] = (Byte)((y_to>>8) & 0xff);
+        
+        for (int i = 0; i < nWidthByteSize; i++) {
+            SET_BIT_IMAGE_MODE[8 + i] = *(binaryImgData + i + offset);
+        }
+        /**
+         PRINT IMAGE
+         */
+        NSData *data = [[NSData alloc] initWithBytes:SET_BIT_IMAGE_MODE length:8 + nWidthByteSize];
+        [self printData:data];
+        free(SET_BIT_IMAGE_MODE);
+        SET_BIT_IMAGE_MODE = NULL;
+        offset += nWidthByteSize;
     }
-    /**
-     PRINT IMAGE
-     */
-    NSData *data = [[NSData alloc] initWithBytes:SET_BIT_IMAGE_MODE length:8 + nBinaryImgDataSize];
-    [self printData:data];
+    
     
     free(pixels);
     free(binaryImgData);
-    free(SET_BIT_IMAGE_MODE);
+    
     pixels = NULL;
     binaryImgData = NULL;
-    SET_BIT_IMAGE_MODE = NULL;
-    return 0;
+    
 }
 
 - (void)printData:(NSData *)dataPrinted {
-    [sendDataArray addObject:dataPrinted];
-//    NSUInteger strLength;
-//    NSUInteger cellCount;
-//    NSUInteger cellMin;
-//    NSUInteger cellLen;
-//
-//    strLength = [dataPrinted length];
-//    if (strLength < 1) {
-//        return;
-//    }
-//    cellCount = (strLength % MAX_CHARACTERISTIC_VALUE_SIZE) ? (strLength / MAX_CHARACTERISTIC_VALUE_SIZE + 1) : (strLength / MAX_CHARACTERISTIC_VALUE_SIZE);
-//    for (NSUInteger i = 0; i < cellCount; i++) {
-//        cellMin = i*MAX_CHARACTERISTIC_VALUE_SIZE;
-//        if (cellMin + MAX_CHARACTERISTIC_VALUE_SIZE > strLength) {
-//            cellLen = strLength-cellMin;
-//        } else {
-//            cellLen = MAX_CHARACTERISTIC_VALUE_SIZE;
-//        }
-////        NSLog(@"print:%lu,%lu,%lu,%lu", (unsigned long)strLength, (unsigned long)cellCount, (unsigned long)cellMin, (unsigned long)cellLen);
-//        NSRange rang = NSMakeRange(cellMin, cellLen);
-//
-//        NSData *subData = [dataPrinted subdataWithRange:rang];
-//        [sendDataArray addObject:subData];
-//    }
+    NSUInteger strLength;
+    NSUInteger cellCount;
+    NSUInteger cellMin;
+    NSUInteger cellLen;
+
+    strLength = [dataPrinted length];
+    if (strLength < 1) {
+        return;
+    }
+    cellCount = (strLength % MAX_CHARACTERISTIC_VALUE_SIZE) ? (strLength / MAX_CHARACTERISTIC_VALUE_SIZE + 1) : (strLength / MAX_CHARACTERISTIC_VALUE_SIZE);
+    for (NSUInteger i = 0; i < cellCount; i++) {
+        cellMin = i*MAX_CHARACTERISTIC_VALUE_SIZE;
+        if (cellMin + MAX_CHARACTERISTIC_VALUE_SIZE > strLength) {
+            cellLen = strLength-cellMin;
+        } else {
+            cellLen = MAX_CHARACTERISTIC_VALUE_SIZE;
+        }
+//        NSLog(@"print:%lu,%lu,%lu,%lu", (unsigned long)strLength, (unsigned long)cellCount, (unsigned long)cellMin, (unsigned long)cellLen);
+        NSRange rang = NSMakeRange(cellMin, cellLen);
+
+        NSData *subData = [dataPrinted subdataWithRange:rang];
+        [sendDataArray addObject:subData];
+    }
 }
 
 - (UIImage *)createQRForString:(NSString *)qrString {
@@ -536,7 +550,8 @@ static int p6[2] = {0, 2};
     return resized;
 }
 - (UIImage *)scaleWithFixedWidth:(CGFloat)width image:(UIImage *)image {
-    float newHeight = image.size.height * (width / image.size.width);
+    CGImageRef inputImageRef = [image CGImage];
+    float newHeight = CGImageGetHeight(inputImageRef) * (width / CGImageGetWidth(inputImageRef));
     CGSize size = CGSizeMake(width, newHeight);
     UIGraphicsBeginImageContextWithOptions(size, NO, 0);
     
@@ -636,37 +651,25 @@ static int p6[2] = {0, 2};
 
 - (void)POS_PrintBMP:(UIImage *)src width:(NSUInteger)nWidth mode:(NSUInteger)nMode {
     NSUInteger width = ((nWidth + 7) / 8) * 8;
-    NSUInteger height = ((((src.size.height * width) / src.size.width) + 7) / 8) * 8;
+//    NSUInteger height = ((((src.size.height * width) / src.size.width) + 7) / 8) * 8;
     UIImage *resizeImage = src;
     if (src.size.width != width) {
-        resizeImage = [self resizeImage:width height:height image:src];
+        resizeImage = [self scaleWithFixedWidth:width image:src];
     }
-    UIImage *grayImage = [self toGrayScale:resizeImage];
-    Byte *data = [self thresholdToBWPic:grayImage];
-    NSUInteger len = grayImage.size.width * grayImage.size.height;
-    Byte *bytes = [self eachLinePixToCmd:data srcLen:len width:width mode:nMode];
-//    NSData *printData = [[NSData alloc] initWithBytes:bytes length:len];
     
-//    Byte ESC_Init[2] = {(Byte)27, (Byte)64 };
-//    [manager startPrint:[[NSData alloc] initWithBytes:ESC_Init length:2]];
-//    Byte LF[1] = { (Byte)10 };
-//    [manager startPrint:[[NSData alloc] initWithBytes:LF length:1]];
-    
-//    [self printData:printData];
-    NSLog(@"DONE--->");
-//    free(bytes);
+    [[ImageProcessor shared] processImage:resizeImage];
 }
 
 /**
  * OTHER
  */
-- (Byte *)thresholdToBWPic:(UIImage *)image {
+- (UInt32 *)thresholdToBWPic:(UIImage *)image {
     int width = image.size.width;
     int height = image.size.height;
     int imgSize = width * height;
     
     // the pixels will be painted to this array
-    uint32_t *pixels = (uint32_t *) malloc(imgSize * sizeof(uint32_t));
+    UInt32 *pixels = (UInt32 *) malloc(imgSize * sizeof(UInt32));
     
     // clear the pixels so any transparency is preserved
     memset(pixels, 0, imgSize * sizeof(uint32_t));
@@ -678,13 +681,16 @@ static int p6[2] = {0, 2};
     
     // paint the bitmap to our context which will fill in the pixels array
     CGContextDrawImage(context, CGRectMake(0, 0, width, height), [image CGImage]);
-    Byte *data = (Byte *)malloc(sizeof(Byte) * imgSize);
+    UInt32 *data = (UInt32 *)malloc(sizeof(UInt32) * imgSize);
     
     [self format_K_threshold:pixels xsize:width ysize:height despixels:data];
     return data;
 }
 
-- (void)format_K_threshold:(uint32_t *)orgpixels xsize:(int)xsize ysize:(int)ysize despixels:(Byte *)despixels {
+- (void)format_K_threshold:(UInt32 *)orgpixels
+                     xsize:(int)xsize
+                     ysize:(int)ysize
+                 despixels:(UInt32 *)despixels {
     int graytotal = 0;
     int k = 0;
     for (int i = 0; i < ysize; i++) {
@@ -707,50 +713,38 @@ static int p6[2] = {0, 2};
     }
 }
 
--(Byte *)eachLinePixToCmd:(Byte *)src srcLen:(NSUInteger)nlen width:(NSUInteger)nWidth mode:(NSUInteger)nMode {
-    Byte ESC_Init[2] = {(Byte)27, (Byte)64 };
-    [self printData:[[NSData alloc] initWithBytes:ESC_Init length:2]];
-    Byte LF[1] = { (Byte)10 };
-    [self printData:[[NSData alloc] initWithBytes:LF length:1]];
+-(void)eachLinePixToCmd:(UInt32 *)src
+                 srcLen:(NSUInteger)nlen
+                  width:(NSUInteger)nWidth
+                   mode:(NSUInteger)nMode {
     
     NSUInteger nHeight = nlen / nWidth;
     NSUInteger nBytesPerLine = nWidth / 8;
-    
-    Byte SELECT_BIT[8];
-    SELECT_BIT[0] = (Byte) 29;
-    SELECT_BIT[1] = (Byte) 118;
-    SELECT_BIT[2] = (Byte) 48;
-    SELECT_BIT[3] = (Byte) (nMode & 1);
-    SELECT_BIT[4] = (Byte) (nBytesPerLine % 256);
-    SELECT_BIT[5] = (Byte) (nBytesPerLine / 256);
-    SELECT_BIT[6] = (Byte) 1;
-    SELECT_BIT[7] = (Byte) 0;
-    [self printData:[[NSData alloc] initWithBytes:SELECT_BIT length:8]];
-    Byte *data = (Byte *)malloc(sizeof(Byte) * ((nBytesPerLine + 8) * nHeight) );
     int k = 0;
     for (int i = 0; i < nHeight; i++) {
-        Byte data[nBytesPerLine];
-        NSUInteger offset = i * (nBytesPerLine + 8);
-        data[offset + 0] = (Byte) 29;
-        data[offset + 1] = (Byte) 118;
-        data[offset + 2] = (Byte) 48;
-        data[offset + 3] = (Byte) (nMode & 1);
-        data[offset + 4] = (Byte) (nBytesPerLine % 256);
-        data[offset + 5] = (Byte) (nBytesPerLine / 256);
-        data[offset + 6] = (Byte) 1;
-        data[offset + 7] = (Byte) 0;
+//        NSUInteger offset = i * (nBytesPerLine + 8);
+        Byte data[nBytesPerLine + 8];
+        data[0] = 0x1d;
+        data[1] = 0x76;
+        data[2] = 0x30;
+        data[3] = (Byte) (nMode & 1);
+        data[4] = (Byte)(nBytesPerLine & 0xff);
+        data[5] = (Byte)((nBytesPerLine>>8) & 0xff);
+        data[6] = (Byte)(nHeight & 0xff);
+        data[7] = (Byte)((nHeight>>8) & 0xff);
+        
         for (int j = 0; j < nBytesPerLine; j++) {
-            data[(offset + 8) + j] = (Byte) (((((((p0[src[k]] + p1[src[k + 1]]) + p2[src[k + 2]]) + p3[src[k + 3]]) + p4[src[k + 4]]) + p5[src[k + 5]]) + p6[src[k + 6]]) + src[k + 7]);
+            data[8 + j] = p0[src[k]] + p1[src[k + 1]] + p2[src[k + 2]] + p3[src[k + 3]] + p4[src[k + 4]] + p5[src[k + 5]] + p6[src[k + 6]] + src[k + 7];
             k += 8;
         }
-//        NSData *printData = [[NSData alloc] initWithBytes:data length:nBytesPerLine];
-//        [self printData:printData];
+        NSData *printData = [[NSData alloc] initWithBytes:data length:nBytesPerLine + 8];
+        [self printData:printData];
     }
-    return data;
 }
 
-- (UIImage *)resizeImage:(CGFloat)width height:(CGFloat)height image:(UIImage *)image {
-    CGSize size = CGSizeMake(width, height);
+- (UIImage *)resizeImage:(UIImage *)image width:(CGFloat)nWidth height:(CGFloat)nHeight {
+    
+    CGSize size = CGSizeMake(nWidth, nHeight);
     UIGraphicsBeginImageContextWithOptions(size, NO, 0);
     
     CGContextRef context = UIGraphicsGetCurrentContext();
@@ -788,7 +782,12 @@ static int p6[2] = {0, 2};
     CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
     
     // create a context with RGBA pixels
-    CGContextRef context = CGBitmapContextCreate(pixels, width, height, 8, width * sizeof(uint32_t), colorSpace,
+    CGContextRef context = CGBitmapContextCreate(pixels,
+                                                 width,
+                                                 height,
+                                                 8,
+                                                 width * sizeof(uint32_t),
+                                                 colorSpace,
                                                  kCGBitmapByteOrder32Little | kCGImageAlphaPremultipliedLast);
     
     // paint the bitmap to our context which will fill in the pixels array
@@ -802,9 +801,7 @@ static int p6[2] = {0, 2};
             uint8_t gray = (uint8_t) ((30 * rgbaPixel[RED] + 59 * rgbaPixel[GREEN] + 11 * rgbaPixel[BLUE]) / 100);
             
             // set the pixels to gray
-            rgbaPixel[RED] = gray;
-            rgbaPixel[GREEN] = gray;
-            rgbaPixel[BLUE] = gray;
+            rgbaPixel[RED] = rgbaPixel[GREEN] = rgbaPixel[BLUE] = gray;
         }
     }
     
@@ -825,6 +822,17 @@ static int p6[2] = {0, 2};
     CGImageRelease(image);
     
     return resultUIImage;
+}
+
+#pragma mark ImageProcessorDelegate
+- (void)imageProcessorFinishedProcessingWithImage:(UIImage*)outputImage {
+    NSLog(@"%s %@", __FUNCTION__, outputImage);
+    [[ImageProcessor shared] pixelsOfImage:outputImage];
+}
+
+- (void)imageProcessorFinishedProcessingWithPixel:(UInt32 *)pixels {
+    NSLog(@"%s", __FUNCTION__);
+    [self eachLinePixToCmd:pixels srcLen:384 * 94 width:WIDTH_58 mode:0];
 }
 
 @end
