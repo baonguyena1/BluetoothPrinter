@@ -155,7 +155,9 @@ static UInt32 p6[2] = {0, 2};
 }
 
 - (void)dayinStart{//打印
-    [self printImageWithName:@"logo"];
+    UIImage *printImage = [UIImage imageNamed:@"logo"];
+    [self POS_PrintBMP:printImage width:WIDTH_58 mode:0];
+//    [self printImageWithName:@"logo"];
 //    [self printBill];
     
 //    [self printerInit];
@@ -447,8 +449,8 @@ static UInt32 p6[2] = {0, 2};
         SET_BIT_IMAGE_MODE[3] = (Byte)0;
         SET_BIT_IMAGE_MODE[4] = (Byte)(nWidthByteSize & 0xff);
         SET_BIT_IMAGE_MODE[5] = (Byte)((nWidthByteSize>>8) & 0xff);
-        SET_BIT_IMAGE_MODE[6] = (Byte)(y_to & 0xff);
-        SET_BIT_IMAGE_MODE[7] = (Byte)((y_to>>8) & 0xff);
+        SET_BIT_IMAGE_MODE[6] = (Byte)(1 & 0xff);
+        SET_BIT_IMAGE_MODE[7] = (Byte)((1>>8) & 0xff);
         
         for (int i = 0; i < nWidthByteSize; i++) {
             SET_BIT_IMAGE_MODE[8 + i] = *(binaryImgData + i + offset);
@@ -827,7 +829,8 @@ static UInt32 p6[2] = {0, 2};
 #pragma mark ImageProcessorDelegate
 - (void)imageProcessorFinishedProcessingWithImage:(UIImage*)outputImage {
     NSLog(@"%s %@", __FUNCTION__, outputImage);
-    [[ImageProcessor shared] pixelsOfImage:outputImage];
+//    [[ImageProcessor shared] pixelsOfImage:outputImage];
+    [self toGrayAndPrint:outputImage];
 }
 
 - (void)imageProcessorFinishedProcessingWithPixel:(UInt32 *)pixels {
