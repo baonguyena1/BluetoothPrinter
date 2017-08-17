@@ -30,7 +30,9 @@
             compressQuality = 1.0;
             break;
     }
+    NSData *originalData = UIImagePNGRepresentation(self);
     NSData *data = UIImageJPEGRepresentation(self, compressQuality);
+    NSLog(@"%ld %ld", originalData.length, data.length);
     return [[UIImage alloc] initWithData:data];
 }
 
